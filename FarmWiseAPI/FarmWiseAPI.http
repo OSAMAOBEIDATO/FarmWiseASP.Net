@@ -1,0 +1,6 @@
+@FarmWiseAPI_HostAddress = http://localhost:5286
+
+GET {{FarmWiseAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
