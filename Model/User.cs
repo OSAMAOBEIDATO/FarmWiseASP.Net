@@ -28,6 +28,6 @@ namespace Model
         [Required(ErrorMessage = "Profile Picture is required.")]
         public string PictureProfile { get; set; }
 
-        public ICollection<Crop> Crops { get; set; }=new List<Crop>();
+        public ICollection<Crop> Crops { get; set; }
     }
 }

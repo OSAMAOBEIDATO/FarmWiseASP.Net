@@ -28,7 +28,7 @@ namespace Model
         public DateTime HarvestDate { get; set; }
 
         // Foreign Key for User
-        [Required()]
+        [Required]
         [ForeignKey("User")]
         public Guid UserId { get; set; }
         public User User { get; set; }

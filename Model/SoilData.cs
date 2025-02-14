@@ -6,8 +6,7 @@ public class SoilData
 {
     [Key]
     public Guid Id { get; set; } = Guid.NewGuid();
-
-    public string? CropType { get; set; }
+    public string? SoilType { get; set; }
 
     [Required]
     public string Location { get; set; }
