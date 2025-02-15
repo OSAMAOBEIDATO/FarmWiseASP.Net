@@ -13,6 +13,6 @@ namespace DataAccess.Repository.IRepository
         IGenaricRepository<Crop> Crops { get; }
         IGenaricRepository<SoilData> SoilDatas { get; }
 
-        void Save();
+        Task Save();
     }
 }

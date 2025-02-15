@@ -1,12 +1,7 @@
 ﻿using DataAccess.Data;
 using DataAccess.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.Repository
 {
@@ -20,27 +15,26 @@ namespace DataAccess.Repository
             this.dBContext=farmWiseDBContext;
             this.DbSet=dBContext.Set<T>();
         }
-        public void Add(T Entity)
+        public async Task Add(T Entity)
         {
-            DbSet.Add(Entity);
-            dBContext.SaveChanges();
+             await DbSet.AddAsync(Entity);
         }
 
-        public IEnumerable<T> Find(Expression<Func<T, bool>> filter)
+        public async Task<IEnumerable<T>> Find(Expression<Func<T, bool>> filter)
         {
-            var query=DbSet.Where(filter);
+            var query = await DbSet.Where(filter).ToListAsync();
             return query;
         }
 
-        public T Get(Expression<Func<T, bool>> expression)
+        public async Task<T> Get(Expression<Func<T, bool>> expression)
         {
-            var entity = DbSet.Where(expression).FirstOrDefault();
+            var entity =await DbSet.Where(expression).FirstOrDefaultAsync();
             return entity;
         }
 
-        public IEnumerable<T> GetAll()
+        public async Task<IEnumerable<T>> GetAll()
         {
-            var query = DbSet.ToList();
+            var query = await DbSet.ToListAsync();
             return query;
         }
 

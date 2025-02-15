@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
-using DataAccess.Data;
 using DataAccess.Repository.IRepository;
 using DTOS.UserDTOs;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Model;
 
 namespace FarmWiseAPI.Controllers
@@ -12,22 +10,19 @@ namespace FarmWiseAPI.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly FarmWiseDBContext dBContext;
         private readonly IMapper mapper;
         private readonly IUnitOfWork unitOFWork;
 
-        public UserController(FarmWiseDBContext farmWiseDBContext,IMapper mapper,IUnitOfWork unitOFWork)
+        public UserController(IMapper mapper, IUnitOfWork unitOFWork)
         {
-            this.dBContext=farmWiseDBContext;
             this.mapper=mapper;
             this.unitOFWork=unitOFWork;
         }
 
-
         [HttpGet("{id:guid}", Name = "GetUserById")]
         public IActionResult GetUserbyIdAsync(Guid id)
         {
-            var userDomain =  unitOFWork.Users.Get(u => u.Id == id);
+            var userDomain = unitOFWork.Users.Get(u => u.Id == id);
             if (userDomain==null)
             {
                 return NotFound("User Not Found");
@@ -36,24 +31,22 @@ namespace FarmWiseAPI.Controllers
             return Ok(userDTO);
         }
 
-
-
         [HttpGet]
-        public IActionResult GetAllUserasync()
+        public async Task<IActionResult> GetAllUserasync()
         {
-            var UsersDomain =  unitOFWork.Users.GetAll();
+            var UsersDomain = await unitOFWork.Users.GetAll();
             if (UsersDomain == null)
             {
                 return NotFound("There are no Users");
             }
 
             var UsersDTO = mapper.Map<List<UserDTO>>(UsersDomain);
+
             return Ok(UsersDTO);
         }
 
-
         [HttpPost]
-        public IActionResult AddUserAsync([FromBody] AddUserRequest addUserRequest)
+        public async Task<IActionResult> AddUserAsync([FromBody] AddUserRequest addUserRequest)
         {
             if (addUserRequest==null)
             {
@@ -61,20 +54,18 @@ namespace FarmWiseAPI.Controllers
             }
             var UserDomain = mapper.Map<User>(addUserRequest);
 
-            unitOFWork.Users.Add(UserDomain);
-            unitOFWork.Save();
+            await unitOFWork.Users.Add(UserDomain);
+            await unitOFWork.Save();
 
             var userDTO = mapper.Map<UserDTO>(UserDomain);
 
-            return CreatedAtAction("GetUserById", new { id = userDTO.Id }, userDTO); 
-
-
+            return CreatedAtAction("GetUserById", new { id = userDTO.Id }, userDTO);
         }
 
         [HttpPut("{id:guid}")]
-        public IActionResult UpdataUserIformation(Guid id, [FromBody] UpdataUserRequest updataUserRequest)
+        public async Task<IActionResult> UpdataUserIformation(Guid id, [FromBody] UpdataUserRequest updataUserRequest)
         {
-            var UserDomain =  unitOFWork.Users.Get(a => a.Id==id);
+            var UserDomain = await unitOFWork.Users.Get(a => a.Id==id);
             if (UserDomain==null)
             {
                 return NotFound("User Not Found");
@@ -85,9 +76,10 @@ namespace FarmWiseAPI.Controllers
             UserDomain.Location=updataUserRequest.Location;
             UserDomain.Name=updataUserRequest.Name;
             UserDomain.PictureProfile=updataUserRequest.PictureProfile;
-            
-             unitOFWork.Users.Update(UserDomain);
-             unitOFWork.Save();
+
+            unitOFWork.Users.Update(UserDomain);
+
+            await unitOFWork.Save();
 
             var userDTO = mapper.Map<UserDTO>(UserDomain);
 
@@ -97,9 +89,9 @@ namespace FarmWiseAPI.Controllers
 
 
         [HttpDelete("{id:guid}")]
-        public IActionResult DeleteUser(Guid id)
+        public async Task<IActionResult> DeleteUser(Guid id)
         {
-            var userDomain = unitOFWork.Users.Get(a => a.Id==id);
+            var userDomain = await unitOFWork.Users.Get(a => a.Id==id);
             if (userDomain==null)
             {
                 return NotFound("User Not Found");
@@ -108,7 +100,7 @@ namespace FarmWiseAPI.Controllers
             //var userDTO = new UserDTO()
 
             unitOFWork.Users.Remove(userDomain);
-            unitOFWork.Save();
+            await unitOFWork.Save();
 
             return Ok(userDTO);
         }

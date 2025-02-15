@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repository.IRepository
 {
-    internal interface ISoilDataRepository:IGenaricRepository<SoilData>
+    public interface ISoilDataRepository:IGenaricRepository<SoilData>
     {
     }
 }

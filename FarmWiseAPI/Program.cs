@@ -12,10 +12,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
+
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen();
 
 builder.Logging.ClearProviders();
+
 builder.Logging.AddConsole();
 
 builder.Services.AddDbContext<FarmWiseDBContext>(options =>
@@ -32,6 +35,7 @@ builder.Services.AddHealthChecks();
 //cfg.AddProfile<UserProfile>();
 //cfg.AddProfile<CropProfile>();
 //});
+
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();  
 
 

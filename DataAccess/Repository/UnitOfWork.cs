@@ -25,9 +25,9 @@ namespace DataAccess.Repository
             SoilDatas = new GenaricRepository<SoilData>(_context);
         }
 
-        public void Save()
+        public async Task Save()
         {
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(FarmWiseDBContext))]
-    [Migration("20250210154034_InitialMigrations")]
-    partial class InitialMigrations
+    [Migration("20250214183815_initialMigrations")]
+    partial class initialMigrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,7 +36,7 @@ namespace DataAccess.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("SoilType")
+                    b.Property<string>("CropType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -108,9 +108,6 @@ namespace DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("SoilType")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -120,6 +117,9 @@ namespace DataAccess.Migrations
 
                     b.Property<decimal>("SoilMoisture")
                         .HasColumnType("decimal(5,2)");
+
+                    b.Property<string>("SoilType")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
